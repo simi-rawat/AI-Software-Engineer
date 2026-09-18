@@ -6,10 +6,28 @@ from backend.retrieval.vector_store import query_similar
 
 
 def search_code(query: str, k: int = 5) -> list[dict]:
+    """Search the indexed repository for code chunks semantically relevant to the query text.
+
+    Returns a list of matching code chunks with their file path, qualified name,
+    source code, and similarity metadata.
+
+    Args:
+        query: A natural language description of what code to find.
+        k: Number of top results to return.
+    """
     return query_similar(query, k=k)
 
 
 def read_file(relative_path: str, repo_path: str) -> str:
+    """Read the full contents of a specific file in the repository.
+
+    Use this when a code chunk alone does not give enough context and you need to
+    inspect the complete file.
+
+    Args:
+        relative_path: Path to the file relative to the repository root.
+        repo_path: The root path of the repository being investigated.
+    """
     repo_root = Path(repo_path).resolve()
     full_path = (Path(repo_path) / relative_path).resolve()
 
