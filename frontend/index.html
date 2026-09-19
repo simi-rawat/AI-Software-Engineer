@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Software Engineer</title>
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --panel: #ffffff;
+      --border: #d9e1ec;
+      --text: #1f2937;
+      --muted: #64748b;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --success-bg: #dcfce7;
+      --success-text: #166534;
+      --danger-bg: #fee2e2;
+      --danger-text: #991b1b;
+      --shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 20px 48px;
+    }
+
+    header {
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+      letter-spacing: -0.03em;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 20px;
+    }
+
+    .card h2 {
+      margin: 0 0 14px;
+      font-size: 1.15rem;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    label {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    input[type="text"], textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font: inherit;
+      background: #fff;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    textarea {
+      min-height: 180px;
+      resize: vertical;
+    }
+
+    input[type="text"]:focus, textarea:focus {
+      border-color: rgba(37, 99, 235, 0.6);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: none;
+      border-radius: 10px;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 600;
+      padding: 12px 16px;
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.08s ease;
+    }
+
+    button:hover {
+      background: var(--primary-hover);
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    button:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .status {
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    .status.error {
+      background: #fef2f2;
+      border-color: #fecaca;
+      color: #991b1b;
+    }
+
+    .status.success {
+      background: #ecfdf5;
+      border-color: #bbf7d0;
+      color: #166534;
+    }
+
+    .loading {
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .results {
+      margin-top: 18px;
+      display: none;
+      gap: 14px;
+    }
+
+    .result-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .badge.verified {
+      background: var(--success-bg);
+      color: var(--success-text);
+    }
+
+    .badge.unresolved {
+      background: var(--danger-bg);
+      color: var(--danger-text);
+    }
+
+    .report {
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: 14px;
+      padding: 18px;
+      border: 1px solid #1e293b;
+      overflow: auto;
+    }
+
+    .report pre {
+      margin: 0;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    @media (min-width: 960px) {
+      .split {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>AI Software Engineer</h1>
+      <p class="subtitle">Analyze a repository, then investigate an issue and view a generated engineering report.</p>
+    </header>
+
+    <div class="grid">
+      <div class="split">
+        <section class="card">
+          <h2>Repository Ingestion</h2>
+          <div class="field">
+            <label for="repoSource">Repository source</label>
+            <input id="repoSource" type="text" placeholder="GitHub URL or local repo path" />
+          </div>
+          <div class="actions">
+            <button id="analyzeBtn">Analyze Repository</button>
+            <span id="analyzeLoading" class="loading" style="display:none;">Indexing repository...</span>
+          </div>
+          <div id="analyzeStatus" class="status" aria-live="polite">Ready to index a repository.</div>
+        </section>
+
+        <section class="card">
+          <h2>Issue Investigation</h2>
+          <div class="field">
+            <label for="issueText">Issue description</label>
+            <textarea id="issueText" placeholder="Describe the bug or issue..."></textarea>
+          </div>
+          <div class="field">
+            <label for="repoPath">Repository path</label>
+            <input id="repoPath" type="text" placeholder="Repository path used above" />
+          </div>
+          <div class="actions">
+            <button id="investigateBtn">Investigate</button>
+            <span id="investigateLoading" class="loading" style="display:none;">Investigating... this may take up to a minute</span>
+          </div>
+          <div id="investigateStatus" class="status" aria-live="polite">Ready to investigate an issue.</div>
+        </section>
+      </div>
+
+      <section id="resultsSection" class="card results">
+        <div class="result-header">
+          <h2 style="margin: 0;">Investigation Results</h2>
+          <span id="verificationBadge" class="badge unresolved">UNRESOLVED</span>
+        </div>
+        <div class="report">
+          <pre id="reportOutput"></pre>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    const analyzeBtn = document.getElementById('analyzeBtn');
+    const investigateBtn = document.getElementById('investigateBtn');
+    const repoSource = document.getElementById('repoSource');
+    const issueText = document.getElementById('issueText');
+    const repoPath = document.getElementById('repoPath');
+    const analyzeLoading = document.getElementById('analyzeLoading');
+    const investigateLoading = document.getElementById('investigateLoading');
+    const analyzeStatus = document.getElementById('analyzeStatus');
+    const investigateStatus = document.getElementById('investigateStatus');
+    const resultsSection = document.getElementById('resultsSection');
+    const verificationBadge = document.getElementById('verificationBadge');
+    const reportOutput = document.getElementById('reportOutput');
+
+    function setStatus(el, message, kind) {
+      el.textContent = message;
+      el.className = 'status' + (kind ? ` ${kind}` : '');
+    }
+
+    function setLoading(button, indicator, loading) {
+      button.disabled = loading;
+      indicator.style.display = loading ? 'inline' : 'none';
+    }
+
+    function showReport(reportMarkdown, verificationStatus) {
+      reportOutput.textContent = reportMarkdown || '';
+      resultsSection.style.display = 'block';
+      const verified = verificationStatus === 'verified';
+      verificationBadge.textContent = verified ? 'VERIFIED' : 'UNRESOLVED';
+      verificationBadge.className = 'badge ' + (verified ? 'verified' : 'unresolved');
+    }
+
+    async function postJson(url, body) {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      });
+
+      let data = null;
+      try {
+        data = await response.json();
+      } catch (error) {
+        throw new Error('Server returned invalid JSON.');
+      }
+
+      if (!response.ok) {
+        throw new Error(data && data.error ? data.error : `Request failed with status ${response.status}`);
+      }
+
+      if (data && data.error) {
+        throw new Error(data.error);
+      }
+
+      return data;
+    }
+
+    analyzeBtn.addEventListener('click', async () => {
+      const source = repoSource.value.trim();
+      if (!source) {
+        setStatus(analyzeStatus, 'Please enter a GitHub URL or local repo path.', 'error');
+        return;
+      }
+
+      setLoading(analyzeBtn, analyzeLoading, true);
+      setStatus(analyzeStatus, 'Indexing repository...', '');
+
+      try {
+        const data = await postJson('http://127.0.0.1:8000/ingest', { source });
+        setStatus(
+          analyzeStatus,
+          `Indexed ${data.files_indexed} files, ${data.chunks_indexed} code chunks from ${data.repo_path}`,
+          'success'
+        );
+        if (data.repo_path) {
+          repoPath.value = data.repo_path;
+        }
+      } catch (error) {
+        setStatus(analyzeStatus, `Error: ${error.message}`, 'error');
+      } finally {
+        setLoading(analyzeBtn, analyzeLoading, false);
+      }
+    });
+
+    investigateBtn.addEventListener('click', async () => {
+      const issue = issueText.value.trim();
+      const path = repoPath.value.trim();
+
+      if (!issue) {
+        setStatus(investigateStatus, 'Please describe the bug or issue first.', 'error');
+        return;
+      }
+      if (!path) {
+        setStatus(investigateStatus, 'Please enter the repository path used during ingestion.', 'error');
+        return;
+      }
+
+      setLoading(investigateBtn, investigateLoading, true);
+      setStatus(investigateStatus, 'Investigating... this may take up to a minute', '');
+
+      try {
+        const data = await postJson('http://127.0.0.1:8000/investigate', {
+          issue_text: issue,
+          repo_path: path
+        });
+        setStatus(investigateStatus, 'Investigation complete.', 'success');
+        showReport(data.report_markdown, data.verification_status);
+      } catch (error) {
+        setStatus(investigateStatus, `Error: ${error.message}`, 'error');
+      } finally {
+        setLoading(investigateBtn, investigateLoading, false);
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from backend.agent.graph import app as agent_app
@@ -9,6 +10,7 @@ from backend.ingestion.pipeline import ingest_repository
 from backend.retrieval.vector_store import add_chunks
 
 app = FastAPI()
+app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
 
 class IngestRequest(BaseModel):
