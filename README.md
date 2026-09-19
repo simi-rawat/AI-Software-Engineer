@@ -89,3 +89,5 @@ This is a small, manually verified evaluation appropriate for the project's curr
 - `backend/retrieval/` - local embedding generation and Chroma vector store access.
 - `backend/agent/` - agent state, tools, reporting, and LangGraph orchestration.
 - `backend/execution/` - temporary workspace patch application and pytest execution.
+- `backend/main.py` - FastAPI application exposing `/health`, `/ingest`, and `/investigate` endpoints.
+- `frontend/` - minimal single-page HTML/CSS/JavaScript interface for repository ingestion and issue investigation.
