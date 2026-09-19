@@ -284,6 +284,8 @@
   </div>
 
   <script>
+    const API_BASE_URL = "http://127.0.0.1:8000";
+
     const analyzeBtn = document.getElementById('analyzeBtn');
     const investigateBtn = document.getElementById('investigateBtn');
     const repoSource = document.getElementById('repoSource');
@@ -353,7 +355,7 @@
       setStatus(analyzeStatus, 'Indexing repository...', '');
 
       try {
-        const data = await postJson('http://127.0.0.1:8000/ingest', { source });
+        const data = await postJson(`${API_BASE_URL}/ingest`, { source });
         setStatus(
           analyzeStatus,
           `Indexed ${data.files_indexed} files, ${data.chunks_indexed} code chunks from ${data.repo_path}`,
@@ -386,7 +388,7 @@
       setStatus(investigateStatus, 'Investigating... this may take up to a minute', '');
 
       try {
-        const data = await postJson('http://127.0.0.1:8000/investigate', {
+        const data = await postJson(`${API_BASE_URL}/investigate`, {
           issue_text: issue,
           repo_path: path
         });
