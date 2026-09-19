@@ -62,7 +62,7 @@ The demo is hosted on Render's free tier, so the first request may be slow due t
 A sample engineering report is available at [docs/sample_report.md](docs/sample_report.md).
 
 ## Evaluation
-The system was tested against a seeded bug in a controlled test repository at [data/seeded_repo/pricing.py](data/seeded_repo/pricing.py). A discount-calculation bug was correctly identified, root-caused, patched, tested, and verified via real test execution on the first attempt, with 0 retries needed.
+The system was tested against three seeded bugs in a controlled test repository (data/seeded_repo): a discount-calculation error, an off-by-one slicing error, and a boundary-condition comparison error. All three were correctly identified, root-caused, patched, tested, and verified via real test execution, with 0/3 requiring the automatic retry (3/3 verified on first attempt).
 
 This is a small, manually verified evaluation appropriate for the project's current scope. Broader benchmark-style evaluation is noted as future work.
 
